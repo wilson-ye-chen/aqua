@@ -5,7 +5,7 @@
 % the gh-AQUA-tc model.
 %
 % Author: Wilson Ye Chen <yche5077@uni.sydney.edu.au>
-% Date:   August 27, 2017
+% Date:   September 23, 2018
 %%
 
 % Override the subplot function
@@ -19,7 +19,7 @@ colorData = [0.7, 0.7, 0.7];
 colorVar5 = [0.3, 0.3, 1];
 colorVar1 = [1, 0.3, 0.3];
 
-load('mat/data_spx.mat');
+load('data/data_spx.mat');
 load('result/aqua.spx.3051-5084.mat');
 
 dn = datenum(DFore);
