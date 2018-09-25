@@ -1,21 +1,20 @@
 # AQUA?
-'AQUA' is the code name for the paper titled 'Dynamic Quantile Function Models' [Here](https://arxiv.org/abs/1707.02587).
-
+'AQUA' is the code name for the paper titled 'Dynamic Quantile Function Models'
+<!---
+[arXiv](https://arxiv.org/abs/1707.02587).
+-->
 # Data
-## Abstract
-The dataset used in the empirical studies of this paper contains observations of one-minute prices and end-of-day (EOD) returns for ten major international stock indices.
-
 ## Availability
 The raw data (prior to cleaning) can be accessed via the Thomson Reuters Tick History (TRTH) database. APIs for connecting to TRTH are available for many programming languages: [Here](https://developers.thomsonreuters.com/thomson-reuters-tick-history-trth). The cleaned data used for the empirical studies can be found in this repository. The steps taken to clean the raw data are documented in Section 5.1.
 
 ## Description
-One-minute price series of ten major stock indices: S&P 500 (SPX), Dow Jones Industrial Average (DJIA), NASDAQ Composite (Nasdaq), FTSE 100 (FTSE), DAX, CAC 40 (CAC), Nikkei Stock Average 225 (Nikkei), Hang Seng (HSI), Shanghai Composite (SSEC), and All Ordinaries (AORD). The sample period starts on January 3, 1996 and ends on May 24, 2016.
+The dataset used in the empirical studies of the paper contains observations of one-minute prices and end-of-day (EOD) returns for ten major international stock indices: S&P 500 (SPX), Dow Jones Industrial Average (DJIA), NASDAQ Composite (Nasdaq), FTSE 100 (FTSE), DAX, CAC 40 (CAC), Nikkei Stock Average 225 (Nikkei), Hang Seng (HSI), Shanghai Composite (SSEC), and All Ordinaries (AORD). The sample period starts on January 3, 1996 and ends on May 24, 2016.
 
 Links to data:
 * Compressed CSV files for the raw data (both one-minute and EOD prices): [Here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data/csv.gz).
 * MATLAB binary files (MAT) for the cleaned one-minute price series: [Here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data).
 
-The cleaned one-minute price series for a single index is stored in 'pricedata_`<index>`.mat', where `<index>` is the abbreviated name of the index. Each file contains the following variables:
+The cleaned one-minute price series for a single index is stored in `pricedata_<index>.mat`, where `<index>` is the abbreviated name of the index. Each file contains the following variables:
 * `D` - dates.
 * `T` - time-stamp of each price.
 * `iD` - date index of each price.
@@ -30,24 +29,24 @@ From the cleaned one-minute price series, one can generate the symbolic data fil
 * `r` - end-of-day returns.
 
 # Code
-## Abstract
-MATLAB code for reproducing the simulation and empirical studies in the paper.
-
 ## Description
 All the code files are under the `src` directory. The sub-directories under `src` are organised as follows:
 * `apat` - functions associated with the Apatosaurus distribution.
 * `base` - library-type functions that implement the core functionalities (e.g., data cleaning, generating QF-valued data, estimating the DQF model using MCMC, generating Bayesian forecasts, etc.).
-* `l1spline` - functions written by 'Mariano Tepper' for fitting L1-splines of Tepper and Saprio (2012, 2013). The `l1spline` function is called during data clearning. (See Appendix F for details.)
-* `ppr` - high-level functions and datasets for producing 'paper specific' results. Some functions require intermediate results returned by the lower-level functions in 'base'.
+* `l1spline` - functions written by Mariano Tepper for fitting L1-splines of Tepper and Saprio (2012, 2013). The `l1spline` function is called during data clearning. (See Appendix F for details.)
+* `ppr` - high-level functions and datasets for producing 'paper specific' results. Some functions require intermediate results returned by the lower-level functions in `base`.
 * `sh` - BASH shell scripts for automatically submitting estimation/forecasting jobs to be executed in parallel on an Unix/Linux cluster (via PBS job scripts).
 * `subaxis` - code written by Aslak Grinsted for generating more flexible sub-plots.
 
 ## Access to HPC
 Access to an Unix/Linux cluster supporting PBS scripts and MATLAB is desirable as it enables the forecasts and estimation results to be generated in parallel (by taking advantage of the provided shell scripts in `sh`).
 
-# Instructions for Use
+# Manual
 ## Examples
-Assume that 1) you have cloned the repository, 2) have MATLAB running, and 3) your current working directory is `src`.
+Assume that
+1. you have cloned the repository,
+2. have MATLAB running, and
+3. your current working directory is `src`.
 
 ### I. Generate cleaned price data from raw .csv data:
 Uncompress all the files in `ppr/data/csv.gz` into a new directory, e.g., `ppr/data/csv`.
