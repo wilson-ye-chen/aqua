@@ -1,71 +1,71 @@
 # AQUA?
-'AQUA' is the code name for the paper titled 'Dynamic Quantile Function Models'.
+'AQUA' is the code name for the paper titled 'Dynamic Quantile Function Models' [Here](https://arxiv.org/abs/1707.02587).
 
 # Data
 ## Abstract
 The dataset used in the empirical studies of this paper contains observations of one-minute prices and end-of-day (EOD) returns for ten major international stock indices.
 
 ## Availability
-The raw data (prior to cleaning) can be accessed via the Thomson Reuters Tick History (TRTH) database. APIs for connecting to TRTH are available for many programming languages: [here](https://developers.thomsonreuters.com/thomson-reuters-tick-history-trth). The cleaned data used for the empirical studies can be found in this repository. The steps taken to clean the raw data are documented in Section 5.1.
+The raw data (prior to cleaning) can be accessed via the Thomson Reuters Tick History (TRTH) database. APIs for connecting to TRTH are available for many programming languages: [Here](https://developers.thomsonreuters.com/thomson-reuters-tick-history-trth). The cleaned data used for the empirical studies can be found in this repository. The steps taken to clean the raw data are documented in Section 5.1.
 
 ## Description
 One-minute price series of ten major stock indices: S&P 500 (SPX), Dow Jones Industrial Average (DJIA), NASDAQ Composite (Nasdaq), FTSE 100 (FTSE), DAX, CAC 40 (CAC), Nikkei Stock Average 225 (Nikkei), Hang Seng (HSI), Shanghai Composite (SSEC), and All Ordinaries (AORD). The sample period starts on January 3, 1996 and ends on May 24, 2016.
 
 Links to data:
-* Compressed CSV files for the raw data (both one-minute and EOD prices): [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data/csv.gz).
-* MATLAB binary files (MAT) for the cleaned one-minute price series: [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data).
+* Compressed CSV files for the raw data (both one-minute and EOD prices): [Here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data/csv.gz).
+* MATLAB binary files (MAT) for the cleaned one-minute price series: [Here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data).
 
 The cleaned one-minute price series for a single index is stored in 'pricedata_`<index>`.mat', where `<index>` is the abbreviated name of the index. Each file contains the following variables:
-* 'D' - dates.
-* 'T' - time-stamp of each price.
-* 'iD' - date index of each price.
-* 'iDKeep' - binary indicator for whether a day is kept during cleaning.
-* 'p' - prices.
+* `D` - dates.
+* `T` - time-stamp of each price.
+* `iD` - date index of each price.
+* `iDKeep` - binary indicator for whether a day is kept during cleaning.
+* `p` - prices.
 
-Note: all the MAT files can be directly loaded into MATLAB by calling the 'load' function, e.g., load('pricedata_spx.mat').
-From the cleaned one-minute price series, one can generate the symbolic data files. The symbolic data file for a single index is stored in 'data_`<index>`.mat', where `<index>` is the abbreviated name of the index. Each file contains the following variables:
-* 'D' - dates.
-* 'Xi' - g-and-h symbolic observations.
-* 'logX' - log realised variances (computed using cleaned one-minute prices).
-* 'r' - end-of-day returns.
+Note: all the MAT files can be directly loaded into MATLAB by calling the `load` function, e.g., `load('pricedata_spx.mat')`.
+From the cleaned one-minute price series, one can generate the symbolic data files. The symbolic data file for a single index is stored in `data_<index>.mat`, where `<index>` is the abbreviated name of the index. Each file contains the following variables:
+* `D` - dates.
+* `Xi` - g-and-h symbolic observations.
+* `logX` - log realised variances (computed using cleaned one-minute prices).
+* `r` - end-of-day returns.
 
 # Code
 ## Abstract
 MATLAB code for reproducing the simulation and empirical studies in the paper.
 
 ## Description
-All the code files are under the 'src' directory. The sub-directories under 'src' are organised as follows:
-* 'apat' - functions associated with the Apatosaurus distribution.
-* 'base' - library-type functions that implement the core functionalities (e.g., data cleaning, generating QF-valued data, estimating the DQF model using MCMC, generating Bayesian forecasts, etc.).
-* 'l1spline' - functions written by 'Mariano Tepper' for fitting L1-splines of Tepper and Saprio (2012, 2013). The 'l1spline' function is called during data clearning. (See Appendix F for details.)
-* 'ppr' - high-level functions and datasets for producing 'paper specific' results. Some functions require intermediate results returned by the lower-level functions in 'base'.
-* 'sh' - BASH shell scripts for automatically submitting estimation/forecasting jobs to be executed in parallel on an Unix/Linux cluster (via PBS job scripts).
-* 'subaxis' - code written by Aslak Grinsted for generating more flexible sub-plots.
+All the code files are under the `src` directory. The sub-directories under `src` are organised as follows:
+* `apat` - functions associated with the Apatosaurus distribution.
+* `base` - library-type functions that implement the core functionalities (e.g., data cleaning, generating QF-valued data, estimating the DQF model using MCMC, generating Bayesian forecasts, etc.).
+* `l1spline` - functions written by 'Mariano Tepper' for fitting L1-splines of Tepper and Saprio (2012, 2013). The `l1spline` function is called during data clearning. (See Appendix F for details.)
+* `ppr` - high-level functions and datasets for producing 'paper specific' results. Some functions require intermediate results returned by the lower-level functions in 'base'.
+* `sh` - BASH shell scripts for automatically submitting estimation/forecasting jobs to be executed in parallel on an Unix/Linux cluster (via PBS job scripts).
+* `subaxis` - code written by Aslak Grinsted for generating more flexible sub-plots.
 
-## Access to computing cluster
-Access to an Unix/Linux cluster supporting PBS scripts and MATLAB is desirable as it enables the forecasts and estimation results to be generated in parallel (by taking advantage of the provided shell scripts in 'sh').
+## Access to HPC
+Access to an Unix/Linux cluster supporting PBS scripts and MATLAB is desirable as it enables the forecasts and estimation results to be generated in parallel (by taking advantage of the provided shell scripts in `sh`).
 
 # Instructions for Use
-## Reproducibility
-Assume that 1) you have cloned the repository, 2) have MATLAB running, and 3) your current working directory is 'src'.
+## Examples
+Assume that 1) you have cloned the repository, 2) have MATLAB running, and 3) your current working directory is `src`.
 
 ### I. Generate cleaned price data from raw .csv data:
-Uncompress all the files in 'ppr/data/csv.gz' into a new directory, e.g., 'ppr/data/csv'.
+Uncompress all the files in `ppr/data/csv.gz` into a new directory, e.g., `ppr/data/csv`.
 ```
 addpath('base');
 addpath('l1spline');
 Stat = run_genprice('ppr/data/csv');
 ```
-'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'pricedata_`<index>`.mat'.
+`Stat` is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names `pricedata_<index>.mat`.
 
 ### II. Generate symbolic data from raw .csv data:
-Uncompress all the files in 'ppr/data/csv.gz' into a new directory, e.g., 'ppr/data/csv'.
+Uncompress all the files in `ppr/data/csv.gz` into a new directory, e.g., `ppr/data/csv`.
 ```
 addpath('base');
 addpath('l1spline');
 Stat = run_gendata('ppr/data/csv');
 ```
-'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'data_`<index>`.mat'.
+`Stat` is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names `data_<index>.mat`.
 
 ### III. Reproduce the simulated dataset
 ```
@@ -78,9 +78,9 @@ Xi = aqua_simdata_tc();
 addpath('base');
 addpath('apat');
 mkdir('sim_result'); cd('sim_result');
-aqua_simjob_tc('simdata_tc_lean.mat', 'aqua_sim_tc_<idx>.mat', <idx>);
+aqua_simjob_tc('simdata_tc_lean.mat', 'aqua_sim_tc_<col>.mat', <col>);
 ```
-Repeat the last line for all values of <idx>, i.e., 1 to 1000. It is preferable to run 'aqua_simjob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_sim.sh'.
+Repeat the last line for all values of `<col>`, i.e., 1 to 1000. It is preferable to run `aqua_simjob_tc` as parallel jobs on a computing cluster using `sh/sub_aqua_sim.sh`.
 ```
 [iSamp, M, S, L, U, AccRate, MapcVal] = aqua_joinsimjob('.');
 [A, B, G, H, C] = aqua_simsumm(M);
@@ -125,7 +125,7 @@ addpath('apat');
 addpath('ppr/data');
 aqua_estjob_tc('data_<index>.mat', 'estresult_aqua_<index>.mat');
 ```
-Repeat the last line for all index identifiers `<index>`. It is preferable to run 'aqua_estjob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_est.sh'.
+Repeat the last line for all index identifiers `<index>`. It is preferable to run `aqua_estjob_tc` as parallel jobs on a computing cluster using `sh/sub_aqua_est.sh`.
 ```
 run_genapatrsig('.');
 ```
@@ -138,7 +138,7 @@ addpath('ppr/data');
 mkdir('fore_aqua_<index>'); cd('fore_aqua_<index>');
 aqua_forejob_tc('data_<index>.mat', 'aqua.<index>.<a>-<b>.mat', '3050', '10', '<a>', '<b>');
 ```
-The arguments `<a>` and `<b>` mark the starting and ending indices of the forecast sample. One can use `<a>` and `<b>` to partition the forecast sample, so that the last line can be parallelised. It is preferable to run 'aqua_forejob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_fore.sh'.
+The arguments `<a>` and `<b>` mark the starting and ending indices of the forecast sample. One can use `<a>` and `<b>` to partition the forecast sample, so that the last line can be parallelised. It is preferable to run `aqua_forejob_tc` as parallel jobs on a computing cluster using `sh/sub_aqua_fore.sh`.
 ```
 run_joinforejob('.');
 ```
