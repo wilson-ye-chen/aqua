@@ -6,18 +6,16 @@
 The dataset used in the empirical studies of this paper contains observations of one-minute prices and end-of-day (EOD) returns for ten major international stock indices.
 
 ## Availability
-The raw data (prior to cleaning) can be accessed via the Thomson Reuters Tick History (TRTH) database. APIs for connecting to TRTH are available for many programming languages: [see here](https://developers.thomsonreuters.com/thomson-reuters-tick-history-trth). The cleaned data used for the empirical studies can be found in this repository. The steps taken to clean the raw data are documented in Section 5.1.
+The raw data (prior to cleaning) can be accessed via the Thomson Reuters Tick History (TRTH) database. APIs for connecting to TRTH are available for many programming languages: [here](https://developers.thomsonreuters.com/thomson-reuters-tick-history-trth). The cleaned data used for the empirical studies can be found in this repository. The steps taken to clean the raw data are documented in Section 5.1.
 
 ## Description
 One-minute price series of ten major stock indices: S&P 500 (SPX), Dow Jones Industrial Average (DJIA), NASDAQ Composite (Nasdaq), FTSE 100 (FTSE), DAX, CAC 40 (CAC), Nikkei Stock Average 225 (Nikkei), Hang Seng (HSI), Shanghai Composite (SSEC), and All Ordinaries (AORD). The sample period starts on January 3, 1996 and ends on May 24, 2016.
 
 Links to data:
+* Compressed CSV files for the raw data (both one-minute and EOD prices): [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data/csv.gz).
+* MATLAB binary files (MAT) for the cleaned one-minute price series: [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data).
 
-Compressed CSV files for the raw data (both one-minute and EOD prices): [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data/csv.gz).
-
-MATLAB binary files (MAT) for the cleaned one-minute price series: [here](https://github.com/wilson-ye-chen/aqua/tree/master/src/ppr/data).
-
-The cleaned one-minute price series for a single index is stored in 'pricedata_<index>.mat', where <index> is the abbreviated name of the index. Each file contains the following variables:
+The cleaned one-minute price series for a single index is stored in 'pricedata_`<index>`.mat', where `<index>` is the abbreviated name of the index. Each file contains the following variables:
 * 'D' - dates.
 * 'T' - time-stamp of each price.
 * 'iD' - date index of each price.
@@ -25,7 +23,7 @@ The cleaned one-minute price series for a single index is stored in 'pricedata_<
 * 'p' - prices.
 
 Note: all the MAT files can be directly loaded into MATLAB by calling the 'load' function, e.g., load('pricedata_spx.mat').
-From the cleaned one-minute price series, one can generate the symbolic data files. The symbolic data file for a single index is stored in 'data_<index>.mat', where <index> is the abbreviated name of the index. Each file contains the following variables:
+From the cleaned one-minute price series, one can generate the symbolic data files. The symbolic data file for a single index is stored in 'data_`<index>`.mat', where `<index>` is the abbreviated name of the index. Each file contains the following variables:
 * 'D' - dates.
 * 'Xi' - g-and-h symbolic observations.
 * 'logX' - log realised variances (computed using cleaned one-minute prices).
@@ -58,7 +56,7 @@ addpath('base');
 addpath('l1spline');
 Stat = run_genprice('ppr/data/csv');
 ```
-'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'pricedata_<index>.mat'.
+'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'pricedata_`<index>`.mat'.
 
 ### II. Generate symbolic data from raw .csv data:
 Uncompress all the files in 'ppr/data/csv.gz' into a new directory, e.g., 'ppr/data/csv'.
@@ -67,7 +65,7 @@ addpath('base');
 addpath('l1spline');
 Stat = run_gendata('ppr/data/csv');
 ```
-'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'data_<index>.mat'.
+'Stat' is a matrix of cleaning summaries containing raw vectors (number of days, number of days deleted, number of prices, number of prices deleted, fraction of price deleted). The generated data files are stored in the current working directory with names 'data_`<index>`.mat'.
 
 ### III. Reproduce the simulated dataset
 ```
@@ -127,7 +125,7 @@ addpath('apat');
 addpath('ppr/data');
 aqua_estjob_tc('data_<index>.mat', 'estresult_aqua_<index>.mat');
 ```
-Repeat the last line for all index identifiers <index>. It is preferable to run 'aqua_estjob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_est.sh'.
+Repeat the last line for all index identifiers `<index>`. It is preferable to run 'aqua_estjob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_est.sh'.
 ```
 run_genapatrsig('.');
 ```
@@ -140,7 +138,7 @@ addpath('ppr/data');
 mkdir('fore_aqua_<index>'); cd('fore_aqua_<index>');
 aqua_forejob_tc('data_<index>.mat', 'aqua.<index>.<a>-<b>.mat', '3050', '10', '<a>', '<b>');
 ```
-The arguments <a> and <b> mark the starting and ending indices of the forecast sample. One can use <a> and <b> to partition the forecast sample, so that the last line can be parallelised. It is preferable to run 'aqua_forejob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_fore.sh'.
+The arguments `<a>` and `<b>` mark the starting and ending indices of the forecast sample. One can use `<a>` and `<b>` to partition the forecast sample, so that the last line can be parallelised. It is preferable to run 'aqua_forejob_tc' as parallel jobs on a computing cluster using 'sh/sub_aqua_fore.sh'.
 ```
 run_joinforejob('.');
 ```
