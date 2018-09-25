@@ -33,7 +33,7 @@ From the cleaned one-minute price series, one can generate the symbolic data fil
 All the code files are under the `src` directory. The sub-directories under `src` are organised as follows:
 * `apat` - functions associated with the Apatosaurus distribution.
 * `base` - library-type functions that implement the core functionalities (e.g., data cleaning, generating QF-valued data, estimating the DQF model using MCMC, generating Bayesian forecasts, etc.).
-* `l1spline` - functions written by Mariano Tepper for fitting L1-splines of Tepper and Saprio (2012, 2013). The `l1spline` function is called during data clearning. (See Appendix F for details.)
+* `l1spline` - functions written by Mariano Tepper for fitting L1-splines of Tepper and Saprio (2012, 2013). The `l1spline` function is called during data cleaning. (See Appendix F for details.)
 * `ppr` - high-level functions and datasets for producing 'paper specific' results. Some functions require intermediate results returned by the lower-level functions in `base`.
 * `sh` - BASH shell scripts for automatically submitting estimation/forecasting jobs to be executed in parallel on an Unix/Linux cluster (via PBS job scripts).
 * `subaxis` - code written by Aslak Grinsted for generating more flexible sub-plots.
